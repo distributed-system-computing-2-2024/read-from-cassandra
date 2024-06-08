@@ -7,11 +7,12 @@ import org.springframework.data.cassandra.core.mapping.Table;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table("road")
 public class Road {
     @PrimaryKey
+    @Column("road_id")
+    private String roadId;
+
     @Column("road_name")
     private String roadName;
 

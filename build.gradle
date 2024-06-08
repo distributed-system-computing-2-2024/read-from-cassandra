@@ -8,8 +8,8 @@ group = 'org.example'
 version = '1.0-SNAPSHOT'
 
 java {
-    sourceCompatibility = '21'
-    targetCompatibility = '21'
+    sourceCompatibility = '17'
+    targetCompatibility = '17'
 }
 
 repositories {
@@ -22,7 +22,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-cassandra'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 }
 
 test {
