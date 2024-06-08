@@ -1,19 +1,21 @@
 package com.cassandra.controller;
 
+import com.cassandra.domain.Road;
 import com.cassandra.service.RoadCongestionService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/roadview")
 public class RoadViewController {
 
-    private RoadCongestionService roadCongestionService;
+    private final RoadCongestionService roadCongestionService;
 
     @Autowired
     public RoadViewController(RoadCongestionService roadCongestionService) {
@@ -21,8 +23,7 @@ public class RoadViewController {
     }
 
     @GetMapping
-    public String getCongestionLevel(@RequestParam String roadName) {
-        Optional<String> roadCongestion = roadCongestionService.getCongestionLevelByRoadName(roadName);
-        return roadCongestion.orElse(null);  // 도로명이 없을 경우 null 반환
+    public List<Road> getAllCongestionLevel() {
+        return roadCongestionService.getAllCongestionLevel();
     }
 }
