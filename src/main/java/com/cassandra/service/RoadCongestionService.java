@@ -21,7 +21,7 @@ public class RoadCongestionService {
         this.roadRepository = roadRepository;
     }
 
-    @Scheduled(fixedRate = 300000)
+    @Scheduled(cron = "0 0/5 * * * *")
     public void fetchTrafficData() {
         roadList = roadRepository.findAll();
         roadList.forEach(info -> {
