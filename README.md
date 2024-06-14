@@ -5,11 +5,11 @@
 
 ## 이 프로젝트의 설정
 
-카산드라 컨테이너 3개 (cassandra1, cassandra2, cassandra3)
+카산드라 컨테이너 1개 (cassandra1)
 
-keyspace : dsc2024, replication_factor: 3
+keyspace : dsc2024, replication_factor: 1
 
-table : road (road_id text, road_name text primary key, congestion_level text)
+table : road (roadname text primary key, congestionlevel text)
 
 ```
 git clone https://github.com/distributed-system-computing-2-2024/read-from-cassandra.git
@@ -32,3 +32,19 @@ docker-compose up -d
 sudo docker-compose up -d
 ```
 
+### 카산드라에 키스페이스 없을 때
+
+cassandra1의 exec에 다음 입력
+
+```
+cqlsh
+
+create keyspace dsc2024 with replication = {'class':'SimpleStrategy', 'replication_factor':1};
+```
+
+데이터 저장하려면
+
+```
+use dsc2024;
+insert into road (oadname, congestionlevel) values (~~, ~~);
+```
