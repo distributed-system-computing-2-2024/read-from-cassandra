@@ -19,6 +19,7 @@ public class RoadCongestionService {
     @Autowired
     public RoadCongestionService(RoadRepository roadRepository) {
         this.roadRepository = roadRepository;
+        fetchTrafficData();
     }
 
     @Scheduled(cron = "0 1/5 * * * *")
