@@ -22,7 +22,7 @@ public class RoadCongestionService {
         fetchTrafficData();
     }
 
-    @Scheduled(cron = "0 0/5 * * * *")
+    @Scheduled(cron = "0 1/5 * * * *")
     public void fetchTrafficData() {
         roadList = roadRepository.findAll();
         roadList.forEach(info -> {
