@@ -9,44 +9,13 @@ services:
     image: cassandra:latest
     container_name: cassandra1
     environment:
-      CASSANDRA_SEEDS: "cassandra1,cassandra2,cassandra3"
+      CASSANDRA_SEEDS: "cassandra1"
     ports:
       - "9042:9042"
     networks:
       - cassandra-net
     healthcheck:
       test: ["CMD-SHELL", "cqlsh cassandra1 -e 'describe keyspaces'"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  cassandra2:
-    image: cassandra:latest
-    container_name: cassandra2
-    environment:
-      CASSANDRA_SEEDS: "cassandra1,cassandra2,cassandra3"
-    networks:
-      - cassandra-net
-    depends_on:
-      - cassandra1
-    healthcheck:
-      test: ["CMD-SHELL", "cqlsh cassandra2 -e 'describe keyspaces'"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  cassandra3:
-    image: cassandra:latest
-    container_name: cassandra3
-    environment:
-      CASSANDRA_SEEDS: "cassandra1,cassandra2,cassandra3"
-    networks:
-      - cassandra-net
-    depends_on:
-      - cassandra1
-      - cassandra2
-    healthcheck:
-      test: ["CMD-SHELL", "cqlsh cassandra3 -e 'describe keyspaces'"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -59,12 +28,8 @@ services:
     depends_on:
       cassandra1:
         condition: service_healthy
-      cassandra2:
-        condition: service_healthy
-      cassandra3:
-        condition: service_healthy
     environment:
-      SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra1,cassandra2,cassandra3
+      SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra1
       SPRING_DATA_CASSANDRA_PORT: 9042
     ports:
       - "8082:8082"
