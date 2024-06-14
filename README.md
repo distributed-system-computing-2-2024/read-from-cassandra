@@ -46,5 +46,5 @@ create keyspace dsc2024 with replication = {'class':'SimpleStrategy', 'replicati
 
 ```
 use dsc2024;
-insert into road (oadname, congestionlevel) values (~~, ~~);
+insert into road (roadname, congestionlevel) values (~~, ~~);
 ```
