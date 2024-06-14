@@ -10,12 +10,6 @@ import org.springframework.data.cassandra.core.mapping.Table;
 @Table("road")
 public class Road {
     @PrimaryKey
-    @Column("road_id")
-    private String roadId;
-
-    @Column("road_name")
     private String roadName;
-
-    @Column("congestion_level")
     private String congestionLevel;
 }
