@@ -11,11 +11,17 @@ import org.springframework.data.cassandra.core.mapping.Table;
 public class Road {
     @PrimaryKey
     @Column("road_id")
-    private String roadId;
+    private String road_id;
 
     @Column("road_name")
-    private String roadName;
+    private String road_name;
 
     @Column("congestion_level")
-    private String congestionLevel;
+    private String congestion_level;
+
+    @Column("std_date")
+    private String std_date;
+
+    @Column("std_hour")
+    private String std_hour;
 }
