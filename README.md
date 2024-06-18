@@ -9,7 +9,7 @@
 
 keyspace : dsc2024, replication_factor: 1
 
-table : road (roadname text primary key, congestionlevel text)
+table : road (road_id text primary key, road_name text, congestion_level text, std_date text, std_hour text)
 
 ```
 git clone https://github.com/distributed-system-computing-2-2024/read-from-cassandra.git
@@ -32,19 +32,11 @@ docker-compose up -d
 sudo docker-compose up -d
 ```
 
-### 카산드라에 키스페이스 없을 때
+### 구글맵 API 설정
+/src/main/resources에 api-key.properties 파일이 있어야 합니다.
 
-cassandra1의 exec에 다음 입력
-
+해당 파일의 내용은 다음과 같습니다.
 ```
-cqlsh
-
-create keyspace dsc2024 with replication = {'class':'SimpleStrategy', 'replication_factor':1};
+google.maps.api.key={API_KEY}
 ```
-
-데이터 저장하려면
-
-```
-use dsc2024;
-insert into road (roadname, congestionlevel) values (~~, ~~);
-```
+{API_KEY}는 자신의 api 키가 들어가야 합니다.
