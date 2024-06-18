@@ -1,37 +1,51 @@
 version: '3'
 
 networks:
-  cassandra-net:
+  cluster:
+    external: true
     driver: bridge
 
 services:
-  cassandra1:
-    image: cassandra:latest
-    container_name: cassandra1
-    environment:
-      CASSANDRA_SEEDS: "cassandra1"
-    ports:
-      - "9042:9042"
-    networks:
-      - cassandra-net
-    healthcheck:
-      test: ["CMD-SHELL", "cqlsh cassandra1 -e 'describe keyspaces'"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
   myapp:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: read-from-cassandra
-    depends_on:
-      cassandra1:
-        condition: service_healthy
     environment:
       SPRING_DATA_CASSANDRA_CONTACT_POINTS: cassandra1
       SPRING_DATA_CASSANDRA_PORT: 9042
     ports:
       - "8082:8082"
     networks:
-      - cassandra-net
+      - cluster
+    depends_on:
+      cassandra1:
+        condition: service_healthy
+    entrypoint: [ "sh", "-c", "sleep 10 && java -jar app.jar" ]
+
+  cassandra1:
+    image: cassandra:latest
+    container_name: cassandra1
+    ports:
+      - "9042:9042"
+    networks:
+      - cluster
+    environment:
+      - MAX_HEAP_SIZE=2G
+      - HEAP_NEWSIZE=800M
+    mem_limit: 4G
+    healthcheck:
+      test: ["CMD-SHELL", "cqlsh cassandra1 -e 'describe keyspaces'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./init-cassandra.cql:/docker-entrypoint-initdb.d/init-cassandra.cql
+    command: >
+      bash -c "
+      /usr/local/bin/docker-entrypoint.sh cassandra -f &
+      pid=\$!;
+      while ! cqlsh cassandra1 -e 'describe keyspaces'; do sleep 5; done;
+      cqlsh -f /docker-entrypoint-initdb.d/init-cassandra.cql;
+      wait \$pid
+      "

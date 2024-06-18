@@ -26,7 +26,8 @@ public class RoadCongestionService {
     public void fetchTrafficData() {
         roadList = roadRepository.findAll();
         roadList.forEach(info -> {
-            log.info("도로명: {}, 혼잡도: {}", info.getRoadName(), info.getCongestionLevel());
+            log.info("VDS ID: {}, 도로명: {}, 혼잡도: {}, Date: {}, Time: {}",
+                    info.getRoad_id(), info.getRoad_name(), info.getCongestion_level(), info.getStd_date(), info.getStd_hour());
         });
     }
 
