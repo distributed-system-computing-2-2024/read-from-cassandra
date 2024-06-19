@@ -32,11 +32,12 @@ docker-compose up -d
 sudo docker-compose up -d
 ```
 
-### 구글맵 API 설정
-/src/main/resources에 api-key.properties 파일이 있어야 합니다.
+### 사용법
 
-해당 파일의 내용은 다음과 같습니다.
-```
-google.maps.api.key={API_KEY}
-```
-{API_KEY}는 자신의 api 키가 들어가야 합니다.
+실행 후 localhost:8082에 접속하면 웹 페이지가 로드됩니다.
+
+검색란에 도로명을 입력하면 해당 문자열을 포함하는 도로들의 정보가 출력됩니다.
+
+검색란에 all을 입력하면 저장된 모든 도로들의 정보가 출력됩니다.
+
+
