@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Information</title>
+    <script>
+        async function fetchRoadData() {
+            const roadName = document.getElementById('roadName').value;
+            const response = await fetch(`/roads?name=${roadName}`);
+            const roads = await response.json();
+            console.log(roads)
+            displayRoads(roads);
+        }
+
+        function displayRoads(roads) {
+            const roadList = document.getElementById('roadList');
+            roadList.innerHTML = '';
+            if (roads.length === 0) {
+                const noDataItem = document.createElement('li');
+                noDataItem.textContent = '해당하는 도로가 없습니다.';
+                roadList.appendChild(noDataItem);
+                return;
+            }
+            roads.sort((a, b) => {
+                if (a.road_id < b.road_id) return -1;
+                if (a.road_id > b.road_id) return 1;
+                return 0;
+            });
+            roads.forEach(road => {
+                const roadItem = document.createElement('li');
+
+                const congestionColor = getCongestionColor(road.congestion_level);
+                const congestionText = document.createElement('span');
+                congestionText.textContent = road.congestion_level;
+                congestionText.style.color = congestionColor;
+
+                roadItem.textContent = `VDS ID: ${road.road_id},\t\t도로명: ${road.road_name}, \t\t혼잡도: `;
+                roadItem.appendChild(congestionText);
+                roadItem.appendChild(document.createTextNode(`, 시간: ${road.std_hour}`));
+
+                roadList.appendChild(roadItem);
+            });
+        }
+
+        function getCongestionColor(level) {
+            switch(level) {
+                case '혼잡':
+                    return 'red';
+                case '서행':
+                    return 'orange';
+                case '원활':
+                    return 'green';
+                default:
+                    return 'black';
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>도로별 혼잡도 조회</h1>
+<label for="roadName">도로명:</label>
+<input type="text" id="roadName" name="roadName">
+<button onclick="fetchRoadData()">검색</button>
+<ul id="roadList"></ul>
+</body>
+</html>
